@@ -10,3 +10,11 @@ class Tuote:
     @property
     def id(self):
         return self._id
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nimi": self.nimi,
+            "kuvaus": self.kuvaus,
+            "hinta": self.hinta
+        }
