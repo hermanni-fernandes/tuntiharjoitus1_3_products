@@ -1,6 +1,6 @@
 # models.py
 
-class Tuote:
+class Product:
     def __init__(self, nimi, kuvaus, hinta, _id=None):
         self.nimi = nimi
         self.kuvaus = kuvaus

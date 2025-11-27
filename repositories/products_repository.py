@@ -1,32 +1,26 @@
-# repositories/products_repository.py
-
 import sqlite3
-from models import Tuote
+from models import Product
 
 class ProductsRepository:
-
     def __init__(self, con):
         self.con = con
 
-    def all(self):
+    def get_all(self):
         cur = self.con.cursor()
-        cur.execute("SELECT * FROM products")
+        cur.execute("SELECT id, nimi, kuvaus, hinta FROM products")
         rows = cur.fetchall()
-        cur.close()
 
         products = []
         for row in rows:
-            products.append(Tuote(row[1], row[2], row[3], row[0]))
-
+            products.append(Product(row[1], row[2], row[3], row[0]))
         return products
 
     def get_by_id(self, product_id):
         cur = self.con.cursor()
-        cur.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+        cur.execute("SELECT id, nimi, kuvaus, hinta FROM products WHERE id = ?", (product_id,))
         row = cur.fetchone()
-        cur.close()
 
         if row is None:
             return None
 
-        return Tuote(row[1], row[2], row[3], row[0])
+        return Product(row[1], row[2], row[3], row[0])

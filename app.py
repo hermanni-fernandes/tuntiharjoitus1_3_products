@@ -5,6 +5,7 @@ from controllers import products_controller
 
 app = Flask(__name__)
 
+# GET kaikki tuotteet
 app.add_url_rule(
     "/api/products",
     "get_products",
@@ -12,6 +13,7 @@ app.add_url_rule(
     methods=["GET"]
 )
 
+# GET tuote ID:n perusteella
 app.add_url_rule(
     "/api/products/<int:product_id>",
     "get_product_by_id",
