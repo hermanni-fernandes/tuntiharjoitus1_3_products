@@ -1,30 +1,32 @@
+# repositories/products_repository.py
+
+import sqlite3
 from models import Tuote
 
 class ProductsRepository:
 
-    def __init__(self):
-        # väliaikainen tietovarasto (muistiin)
-        self.products = []
-        self.next_id = 1
+    def __init__(self, con):
+        self.con = con
 
-    def get_all(self):
-        return self.products
+    def all(self):
+        cur = self.con.cursor()
+        cur.execute("SELECT * FROM products")
+        rows = cur.fetchall()
+        cur.close()
+
+        products = []
+        for row in rows:
+            products.append(Tuote(row[1], row[2], row[3], row[0]))
+
+        return products
 
     def get_by_id(self, product_id):
-        for p in self.products:
-            if p.id == product_id:
-                return p
-        return None
+        cur = self.con.cursor()
+        cur.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+        row = cur.fetchone()
+        cur.close()
 
-    def add(self, name, price):
-        product = Product(name, price, self.next_id)
-        self.products.append(product)
-        self.next_id += 1
-        return product
+        if row is None:
+            return None
 
-    def remove(self, product_id):
-        for p in self.products:
-            if p.id == product_id:
-                self.products.remove(p)
-                return True
-        return False
+        return Tuote(row[1], row[2], row[3], row[0])
